@@ -1,0 +1,1222 @@
+{
+  "info": {
+    "name": "Jobaresure API",
+    "_postman_id": "b1f2c3d4-0001-4a2b-9c3d-jobaresure0001",
+    "description": "REST API collection for the Jobaresure employment platform.\n\nBase URL is the `{{baseUrl}}` variable (default http://localhost:8080).\n\nAuthentication: most endpoints use Bearer JWT. Run **Auth > Login** (or a Register request) first — its test script auto-saves `accessToken` and `refreshToken` into collection variables, and every protected request inherits the Bearer token automatically. Public endpoints override auth to `noauth`.\n\nCreate requests (organization, employer, job, application, verification, skill) save the returned id/publicId into collection variables so you can chain calls.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{accessToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "orgId", "value": "" },
+    { "key": "employerId", "value": "" },
+    { "key": "jobPublicId", "value": "" },
+    { "key": "applicationId", "value": "" },
+    { "key": "verificationId", "value": "" },
+    { "key": "skillId", "value": "" },
+    { "key": "experienceId", "value": "" },
+    { "key": "educationId", "value": "" },
+    { "key": "applicantSkillId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Job Seeker",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.accessToken) pm.collectionVariables.set('accessToken', d.accessToken);",
+                  "  if (d.refreshToken) pm.collectionVariables.set('refreshToken', d.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Ada\",\n  \"lastName\": \"Lovelace\",\n  \"email\": \"ada@example.com\",\n  \"phone\": \"+919876543210\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register/job-seeker",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "register", "job-seeker" ]
+            }
+          }
+        },
+        {
+          "name": "Register Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.accessToken) pm.collectionVariables.set('accessToken', d.accessToken);",
+                  "  if (d.refreshToken) pm.collectionVariables.set('refreshToken', d.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Grace\",\n  \"lastName\": \"Hopper\",\n  \"email\": \"grace@acme.com\",\n  \"phone\": \"+919876500000\",\n  \"password\": \"Password123!\",\n  \"companyName\": \"Acme Corp\",\n  \"companyEmail\": \"hr@acme.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register/company",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "register", "company" ]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.accessToken) pm.collectionVariables.set('accessToken', d.accessToken);",
+                  "  if (d.refreshToken) pm.collectionVariables.set('refreshToken', d.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ada@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "login" ]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.accessToken) pm.collectionVariables.set('accessToken', d.accessToken);",
+                  "  if (d.refreshToken) pm.collectionVariables.set('refreshToken', d.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "refresh" ]
+            }
+          }
+        },
+        {
+          "name": "Current User (me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "me" ]
+            }
+          }
+        },
+        {
+          "name": "Send Email Verification",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ada@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/email/send-verification",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "email", "send-verification" ]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ada@example.com\",\n  \"code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/email/verify",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "email", "verify" ]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ada@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/password/forgot",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "password", "forgot" ]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ada@example.com\",\n  \"code\": \"123456\",\n  \"newPassword\": \"NewPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/password/reset",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "auth", "password", "reset" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OTP",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\",\n  \"purpose\": \"PHONE_VERIFICATION\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/otp/send",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "otp", "send" ]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\",\n  \"code\": \"123456\",\n  \"purpose\": \"PHONE_VERIFICATION\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/otp/verify",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "otp", "verify" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "Create Organization",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('orgId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyName\": \"Globex Inc\",\n  \"companyEmail\": \"hr@globex.com\",\n  \"emailDomain\": \"globex.com\",\n  \"website\": \"https://globex.com\",\n  \"industry\": \"Technology\",\n  \"headquartersLocation\": \"Bengaluru, India\",\n  \"foundedYear\": 2008,\n  \"description\": \"Leading tech company\",\n  \"linkedinUrl\": \"https://linkedin.com/company/globex\",\n  \"twitterUrl\": \"https://twitter.com/globex\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations" ]
+            }
+          }
+        },
+        {
+          "name": "Get Organization By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/{{orgId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "{{orgId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Get All Organizations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations?page=0&size=10&sortBy=createdAt&sortDir=desc",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations" ],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "sortBy", "value": "createdAt" },
+                { "key": "sortDir", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Organization",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"industry\": \"Fintech\",\n  \"about\": \"We build financial software\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/{{orgId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "{{orgId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Delete Organization",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/{{orgId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "{{orgId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Verify Organization",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/{{orgId}}/verify",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "{{orgId}}", "verify" ]
+            }
+          }
+        },
+        {
+          "name": "Check Organization Exists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/check?companyName=Globex Inc",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "check" ],
+              "query": [ { "key": "companyName", "value": "Globex Inc" } ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employers",
+      "item": [
+        {
+          "name": "Create Employer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('employerId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@globex.com\",\n  \"phone\": \"+919812345678\",\n  \"jobTitle\": \"HR Manager\",\n  \"department\": \"HR\",\n  \"role\": \"recruiter\",\n  \"profilePicture\": \"https://cdn.example.com/john.png\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/{{orgId}}/employers",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "{{orgId}}", "employers" ]
+            }
+          }
+        },
+        {
+          "name": "Get Employer By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Get All Employers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers?page=0&size=10&sortBy=createdAt&sortDir=desc",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers" ],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "sortBy", "value": "createdAt" },
+                { "key": "sortDir", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Employers By Organization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/organizations/{{orgId}}/employers?page=0&size=10",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "organizations", "{{orgId}}", "employers" ],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Employer",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jonathan\",\n  \"jobTitle\": \"Senior Recruiter\",\n  \"department\": \"Talent\",\n  \"role\": \"recruiter\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Delete Employer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Update Employer Status",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}/status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}", "status" ]
+            }
+          }
+        },
+        {
+          "name": "Update Employer Role",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}/role",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}", "role" ]
+            }
+          }
+        },
+        {
+          "name": "Set Primary Contact",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}/primary",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}", "primary" ]
+            }
+          }
+        },
+        {
+          "name": "Check Employer Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/check?email=john.doe@globex.com",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "check" ],
+              "query": [ { "key": "email", "value": "john.doe@globex.com" } ]
+            }
+          }
+        },
+        {
+          "name": "Update Last Login",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/employers/{{employerId}}/last-login",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "employers", "{{employerId}}", "last-login" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Create Job",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.publicId) pm.collectionVariables.set('jobPublicId', d.publicId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobTitle\": \"Senior Backend Engineer\",\n  \"organizationId\": \"{{orgId}}\",\n  \"postedBy\": \"{{employerId}}\",\n  \"jobType\": \"full_time\",\n  \"workMode\": \"hybrid\",\n  \"location\": \"Bengaluru, India\",\n  \"jobDescription\": \"Build and scale our backend services.\",\n  \"salaryMin\": 1500000,\n  \"salaryMax\": 2500000,\n  \"experienceMin\": 3,\n  \"experienceMax\": 7,\n  \"applicationDeadline\": \"2026-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs" ]
+            }
+          }
+        },
+        {
+          "name": "Get Job By Public Id",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs/{{jobPublicId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs", "{{jobPublicId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Get All Jobs",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs?page=0&size=10",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs" ],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobTitle\": \"Staff Backend Engineer\",\n  \"jobType\": \"full_time\",\n  \"workMode\": \"remote\",\n  \"location\": \"Remote (India)\",\n  \"salaryMin\": 2000000,\n  \"salaryMax\": 3500000,\n  \"salaryCurrency\": \"INR\",\n  \"isSalaryVisible\": true,\n  \"experienceMin\": 5,\n  \"experienceMax\": 10,\n  \"applicationDeadline\": \"2027-01-31\",\n  \"jobDescription\": \"Lead backend architecture.\",\n  \"responsibilities\": \"Own services end to end.\",\n  \"requirements\": \"Java, Spring Boot, MySQL.\",\n  \"numberOfOpenings\": 2,\n  \"department\": \"Engineering\",\n  \"seniorityLevel\": \"senior\",\n  \"educationLevel\": \"bachelors\",\n  \"isFeatured\": true,\n  \"isUrgent\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs/{{jobPublicId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs", "{{jobPublicId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Update Job Status",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs/{{jobPublicId}}/status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs", "{{jobPublicId}}", "status" ]
+            }
+          }
+        },
+        {
+          "name": "Delete Job",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs/{{jobPublicId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs", "{{jobPublicId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Search Jobs",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jobs/search?keyword=engineer&location=Bengaluru&jobType=full_time&workMode=hybrid&page=0&size=10&sortBy=createdAt&sortDir=desc",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "jobs", "search" ],
+              "query": [
+                { "key": "keyword", "value": "engineer" },
+                { "key": "location", "value": "Bengaluru" },
+                { "key": "jobType", "value": "full_time" },
+                { "key": "workMode", "value": "hybrid" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "sortBy", "value": "createdAt" },
+                { "key": "sortDir", "value": "desc" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Job Seeker Profile",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me" ]
+            }
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Ada\",\n  \"lastName\": \"Lovelace\",\n  \"phone\": \"+919876543210\",\n  \"headline\": \"Backend Engineer\",\n  \"bio\": \"I love distributed systems.\",\n  \"currentLocation\": \"Bengaluru, India\",\n  \"totalExperienceYears\": 5.5,\n  \"currentSalary\": 1800000,\n  \"expectedSalary\": 2500000,\n  \"currency\": \"INR\",\n  \"portfolioUrl\": \"https://ada.dev\",\n  \"linkedinUrl\": \"https://linkedin.com/in/ada\",\n  \"githubUrl\": \"https://github.com/ada\",\n  \"noticePeriod\": \"days30\",\n  \"isActivelyLooking\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me" ]
+            }
+          }
+        },
+        {
+          "name": "Add Work Experience",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('experienceId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobTitle\": \"Backend Engineer\",\n  \"companyName\": \"Initech\",\n  \"location\": \"Pune, India\",\n  \"startDate\": \"2021-01-01\",\n  \"endDate\": \"2023-06-30\",\n  \"isCurrent\": false,\n  \"description\": \"Built REST APIs in Spring Boot.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/experiences",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "experiences" ]
+            }
+          }
+        },
+        {
+          "name": "Update Work Experience",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobTitle\": \"Senior Backend Engineer\",\n  \"companyName\": \"Initech\",\n  \"location\": \"Pune, India\",\n  \"startDate\": \"2021-01-01\",\n  \"isCurrent\": true,\n  \"description\": \"Led the payments service.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/experiences/{{experienceId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "experiences", "{{experienceId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Delete Work Experience",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/experiences/{{experienceId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "experiences", "{{experienceId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Add Education",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('educationId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"degree\": \"B.Tech\",\n  \"fieldOfStudy\": \"Computer Science\",\n  \"institutionName\": \"IIT Bombay\",\n  \"location\": \"Mumbai, India\",\n  \"startDate\": \"2014-08-01\",\n  \"endDate\": \"2018-05-31\",\n  \"isCurrent\": false,\n  \"grade\": \"8.5 CGPA\",\n  \"description\": \"Specialized in distributed systems.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/educations",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "educations" ]
+            }
+          }
+        },
+        {
+          "name": "Update Education",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"degree\": \"B.Tech\",\n  \"fieldOfStudy\": \"Computer Science & Engineering\",\n  \"institutionName\": \"IIT Bombay\",\n  \"grade\": \"8.7 CGPA\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/educations/{{educationId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "educations", "{{educationId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Delete Education",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/educations/{{educationId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "educations", "{{educationId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Add Skill",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('applicantSkillId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skillName\": \"Spring Boot\",\n  \"proficiency\": \"ADVANCED\",\n  \"yearsOfExperience\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/skills",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "skills" ]
+            }
+          }
+        },
+        {
+          "name": "Remove Skill",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me/skills/{{applicantSkillId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "profile", "me", "skills", "{{applicantSkillId}}" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Company Profile",
+      "item": [
+        {
+          "name": "Get My Company",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/company/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "company", "me" ]
+            }
+          }
+        },
+        {
+          "name": "Update My Company",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyName\": \"Acme Corp\",\n  \"companyEmail\": \"hr@acme.com\",\n  \"companyPhone\": \"+918000000000\",\n  \"logoUrl\": \"https://cdn.example.com/acme.png\",\n  \"website\": \"https://acme.com\",\n  \"industry\": \"Technology\",\n  \"companySize\": \"SIZE_51_200\",\n  \"description\": \"We build rockets.\",\n  \"about\": \"Founded to make space travel routine.\",\n  \"headquartersLocation\": \"Hyderabad, India\",\n  \"foundedYear\": 2010,\n  \"linkedinUrl\": \"https://linkedin.com/company/acme\",\n  \"twitterUrl\": \"https://twitter.com/acme\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/company/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "company", "me" ]
+            }
+          }
+        },
+        {
+          "name": "Get My Employer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/company/me/employer",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "company", "me", "employer" ]
+            }
+          }
+        },
+        {
+          "name": "Update My Employer",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Grace\",\n  \"lastName\": \"Hopper\",\n  \"phone\": \"+919876500000\",\n  \"profilePicture\": \"https://cdn.example.com/grace.png\",\n  \"jobTitle\": \"Head of Talent\",\n  \"department\": \"People\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/company/me/employer",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "company", "me", "employer" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Skills",
+      "item": [
+        {
+          "name": "List / Search Skills",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/skills?keyword=java&page=0&size=20",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "skills" ],
+              "query": [
+                { "key": "keyword", "value": "java" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Skill (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('skillId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kubernetes\",\n  \"category\": \"DevOps\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/skills",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "skills" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Verification",
+      "item": [
+        {
+          "name": "Submit Identity Verification (Job Seeker)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('verificationId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentType\": \"AADHAAR\",\n  \"documentUrl\": \"https://cdn.example.com/docs/aadhaar.pdf\",\n  \"documentNumber\": \"1234-5678-9012\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verifications/identity",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "verifications", "identity" ]
+            }
+          }
+        },
+        {
+          "name": "Submit Company Verification (Company)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('verificationId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentType\": \"GST_CERTIFICATE\",\n  \"documentUrl\": \"https://cdn.example.com/docs/gst.pdf\",\n  \"documentNumber\": \"29ABCDE1234F1Z5\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verifications/company",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "verifications", "company" ]
+            }
+          }
+        },
+        {
+          "name": "My Verifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verifications/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "verifications", "me" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin · Verification",
+      "item": [
+        {
+          "name": "List Verifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/verifications?status=PENDING&page=0&size=20",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "admin", "verifications" ],
+              "query": [
+                { "key": "status", "value": "PENDING" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Review Verification",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"APPROVED\",\n  \"reviewNotes\": \"Documents verified successfully.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/verifications/{{verificationId}}/review",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "admin", "verifications", "{{verificationId}}", "review" ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "item": [
+        {
+          "name": "Apply To Job (Job Seeker)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code < 300) {",
+                  "  var d = (pm.response.json() || {}).data || {};",
+                  "  if (d.id) pm.collectionVariables.set('applicationId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobId\": \"REPLACE_WITH_JOB_UUID\",\n  \"resumeUrl\": \"https://cdn.example.com/resumes/ada.pdf\",\n  \"coverLetter\": \"I am excited to apply for this role.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "applications" ]
+            },
+            "description": "jobId is the job's internal UUID (not the publicId)."
+          }
+        },
+        {
+          "name": "My Applications (Job Seeker)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "applications", "me" ]
+            }
+          }
+        },
+        {
+          "name": "Withdraw Application (Job Seeker)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/{{applicationId}}/withdraw",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "applications", "{{applicationId}}", "withdraw" ]
+            }
+          }
+        },
+        {
+          "name": "Applications For Job (Company)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/job/{{jobPublicId}}?page=0&size=10",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "applications", "job", "{{jobPublicId}}" ],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Application Status (Company)",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"shortlisted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/applications/{{applicationId}}/status",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "v1", "applications", "{{applicationId}}", "status" ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
